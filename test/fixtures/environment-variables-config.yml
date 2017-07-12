@@ -1,0 +1,4 @@
+numVar: ${ NUM_VAR }
+stringVar: ${ STRING_VAR }
+
+test: 'test'

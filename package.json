@@ -1,0 +1,30 @@
+{
+  "name": "confugu",
+  "version": "0.0.1",
+  "description": "Awesome configs",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc ava test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charlieduong94/confugu.git"
+  },
+  "keywords": [
+    "config",
+    "environment",
+    "variables"
+  ],
+  "author": "Charlie Duong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/charlieduong94/confugu/issues"
+  },
+  "homepage": "https://github.com/charlieduong94/confugu#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^0.20.0",
+    "js-yaml": "^3.9.0",
+    "nyc": "^11.0.3"
+  }
+}

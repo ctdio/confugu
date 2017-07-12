@@ -1,0 +1,3 @@
+# confugu
+
+Simple config loading
