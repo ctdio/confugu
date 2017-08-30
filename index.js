@@ -18,14 +18,25 @@ function replaceEnvironmentVariables (rawConfig) {
   })
 }
 
+function processFile (rawConfig) {
+  // preprocess config file, replace environment variables
+  const processedConfig = replaceEnvironmentVariables(rawConfig)
+  return yaml.safeLoad(processedConfig)
+}
+
 exports.load = async function load (configFilePath) {
   try {
     const rawConfig = await readFile(configFilePath)
+    return processFile(rawConfig)
+  } catch (err) {
+    throw new Error(`Error loading config: ${err}`)
+  }
+}
 
-    // preprocess config file, replace environment variables
-    const processedConfig = replaceEnvironmentVariables(rawConfig)
-
-    return yaml.safeLoad(processedConfig)
+exports.loadSync = function loadSync (configFilePath) {
+  try {
+    const rawConfig = fs.readFileSync(configFilePath, 'utf8')
+    return processFile(rawConfig)
   } catch (err) {
     throw new Error(`Error loading config: ${err}`)
   }
