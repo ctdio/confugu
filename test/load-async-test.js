@@ -2,10 +2,13 @@ const test = require('ava')
 
 const confugu = require('../index')
 
-test.before('Set environment variables', (t) => {
+const NUM_VAR = 123456
+const STRING_VAR = 'some environment variable'
+
+test.beforeEach('Set environment variables', (t) => {
   process.env = {
-    NUM_VAR: 123456,
-    STRING_VAR: 'some environment variable',
+    NUM_VAR,
+    STRING_VAR
   }
 })
 
@@ -48,8 +51,20 @@ test('should be able to parse environment variables', async (t) => {
   const config = await confugu.load(configPath)
 
   t.deepEqual(config, {
-    numVar: process.env.NUM_VAR,
-    stringVar: process.env.STRING_VAR,
+    numVar: NUM_VAR,
+    stringVar: STRING_VAR,
+    test: 'test'
+  })
+})
+
+test('should delete properties that are not defined', async (t) => {
+  process.env.STRING_VAR_UND = 'hello'
+  const configPath = require.resolve('./fixtures/environment-variables-undefined-config.yml')
+  const config = await confugu.load(configPath)
+
+  t.deepEqual(config, {
+    stringVarUnd: 'hello',
+    sub: {},
     test: 'test'
   })
 })
