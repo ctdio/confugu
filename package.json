@@ -21,7 +21,9 @@
     "url": "https://github.com/charlieduong94/confugu/issues"
   },
   "homepage": "https://github.com/charlieduong94/confugu#readme",
-  "dependencies": {},
+  "dependencies": {
+    "traverse": "^0.6.6"
+  },
   "devDependencies": {
     "ava": "^0.20.0",
     "js-yaml": "^3.9.0",

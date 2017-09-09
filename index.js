@@ -1,5 +1,6 @@
 const fs = require('fs')
 const yaml = require('js-yaml')
+const traverse = require('traverse')
 
 async function readFile (filePath) {
   return new Promise((resolve, reject) => {
@@ -21,7 +22,13 @@ function replaceEnvironmentVariables (rawConfig) {
 function processFile (rawConfig) {
   // preprocess config file, replace environment variables
   const processedConfig = replaceEnvironmentVariables(rawConfig)
-  return yaml.safeLoad(processedConfig)
+  const json = yaml.safeLoad(processedConfig)
+
+  traverse(json).forEach(function (x) {
+    if (x === 'undefined') this.delete(x)
+  })
+
+  return json
 }
 
 exports.load = async function load (configFilePath) {
