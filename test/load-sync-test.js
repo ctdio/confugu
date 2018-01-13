@@ -22,6 +22,22 @@ test('should be able to load a simple config synchronously', (t) => {
   })
 })
 
+test('should add a "get" function in synchronous load', (t) => {
+  const configPath = require.resolve('./fixtures/simple-config.yml')
+  const config = confugu.loadSync(configPath)
+
+  t.is(config.get('test'), 'test value')
+  t.is(config.get('testNum'), 123456)
+})
+
+test('should allow "get" on deeply nested config in synchronous load', async (t) => {
+  const configPath = require.resolve('./fixtures/deep-config.yml')
+  const config = confugu.loadSync(configPath)
+
+  t.is(config.get('test.deep.nested.config.name'), 'John')
+  t.is(config.get('other.deep.nested.config.name'), 'Jane')
+})
+
 test('should throw an error if invalid path is given', (t) => {
   const configPath = 'some invalid path'
 

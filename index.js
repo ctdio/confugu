@@ -1,6 +1,7 @@
 const fs = require('fs')
 const yaml = require('js-yaml')
 const traverse = require('traverse')
+const get = require('lodash.get')
 
 async function readFile (filePath) {
   return new Promise((resolve, reject) => {
@@ -31,10 +32,23 @@ function processFile (rawConfig) {
   return json
 }
 
+function addGetFn (config) {
+  Object.defineProperty(config, 'get', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value (path) {
+      return get(config, path)
+    }
+  });
+}
+
 exports.load = async function load (configFilePath) {
   try {
     const rawConfig = await readFile(configFilePath)
-    return processFile(rawConfig)
+    const processed = processFile(rawConfig)
+    addGetFn(processed)
+    return processed
   } catch (err) {
     throw new Error(`Error loading config: ${err}`)
   }
@@ -43,7 +57,9 @@ exports.load = async function load (configFilePath) {
 exports.loadSync = function loadSync (configFilePath) {
   try {
     const rawConfig = fs.readFileSync(configFilePath, 'utf8')
-    return processFile(rawConfig)
+    const processed = processFile(rawConfig)
+    addGetFn(processed)
+    return processed
   } catch (err) {
     throw new Error(`Error loading config: ${err}`)
   }

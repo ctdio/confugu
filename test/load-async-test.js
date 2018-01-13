@@ -22,6 +22,24 @@ test('should be able to load a simple config', async (t) => {
   })
 })
 
+test('should add a "get" function in async load', async (t) => {
+  const configPath = require.resolve('./fixtures/simple-config.yml')
+  const config = await confugu.load(configPath)
+
+  t.is(config.get('test'), 'test value')
+  t.is(config.get('testNum'), 123456)
+  t.is(config.get('random'), undefined)
+})
+
+test('should allow "get" on deeply nested config in async load', async (t) => {
+  const configPath = require.resolve('./fixtures/deep-config.yml')
+  const config = await confugu.load(configPath)
+
+  t.is(config.get('test.deep.nested.config.name'), 'John')
+  t.is(config.get('other.deep.nested.config.name'), 'Jane')
+  t.is(config.get('random.invalid.nested.key'), undefined)
+})
+
 test('should throw an error if invalid path is given', async (t) => {
   const configPath = 'some invalid path'
 
