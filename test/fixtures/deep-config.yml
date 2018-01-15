@@ -1,0 +1,10 @@
+test:
+  deep:
+    nested:
+      config:
+        name: 'John'
+other:
+  deep:
+    nested:
+      config:
+        name: 'Jane'
